@@ -1,0 +1,65 @@
+<?php
+
+namespace {{ namespace }};
+
+use App\Services\{{ model }}Service;
+use {{ namespacedModel }};
+use {{ rootNamespace }}Http\Controllers\Controller;
+use {{ namespacedRequests }}
+use App\Http\Resources\{{ model }}Resource;
+use App\Http\Requests\{{ model }}\Store{{ model }}Request;
+use App\Http\Requests\{{ model }}\Update{{ model }}Request;
+
+class {{ class }} extends Controller
+{
+    public function __construct(protected {{ model }}Service ${{ modelVariable }}Service){}
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $res = $this->{{ modelVariable }}Service->getAll();
+
+        return $this->successResponse({{ model }}Resource::collection($res));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Store{{ model }}Request $request)
+    {
+        ${{ modelVariable }} = $this->{{ modelVariable }}Service->create($request->validated());
+        
+        return $this->successResponse(new {{ model }}Resource(${{ modelVariable }}), code:201);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show({{ model }} ${{ modelVariable }})
+    {
+        ${{ modelVariable }} = $this->{{ modelVariable }}Service->getOne();
+
+        return $this->successResponse({{ model }}Resource::collection( ${{ modelVariable }}));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Update{{ model }}Request Request  $request, {{ model }} ${{ modelVariable }})
+    {
+        ${{ modelVariable }} = $this->{{ modelVariable }}Service->update($request->validated());
+        
+        return $this->successResponse(new {{ model }}Resource(${{ modelVariable }}));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy({{ model }} ${{ modelVariable }})
+    {
+        ${{ modelVariable }}->delete();
+        return $this->successResponse(null, code:204);
+    }
+}
