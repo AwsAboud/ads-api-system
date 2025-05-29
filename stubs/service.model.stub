@@ -1,0 +1,49 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ namespacedModel }};
+use Illuminate\Pagination\LengthAwarePaginator;
+
+class {{ class }}
+{
+    /**
+     * Relations to eager load.
+     */
+    protected array $relations;
+
+    public function __construct()
+    {
+        // Add your relations here
+        $this->relations = [];
+    }
+
+    public function getAll(): LengthAwarePaginator
+    {
+        return {{ model }}::with($this->relations)->paginate(10);
+    }
+
+    public function getOne({{ model }} ${{ modelVariable }}): {{ model }}
+    {
+        return ${{ modelVariable }}->load($this->relations);
+    }
+
+    public function create(array $data): {{ model }}
+    {
+        ${{ modelVariable }} = {{ model }}::create($data);
+
+        return ${{ modelVariable }}->load($this->relations);
+    }
+
+    public function update(array $data, {{ model }} ${{ modelVariable }}): {{ model }}
+    {
+        ${{ modelVariable }}->update($data);
+
+        return ${{ modelVariable }}->load($this->relations);
+    }
+
+    public function delete({{ model }} ${{ modelVariable }}): bool
+    {
+        return ${{ modelVariable }}->delete();
+    }
+}
