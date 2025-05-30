@@ -72,14 +72,21 @@ class CategoryService
         return $category->load($this->relations);
     }
 
-    /**
+    /** 
      * Delete the specified category.
      *
      * @param Category $category The category model instance to delete.
+     * 
+     * @throws \Exception If the category has ads attached.
+     * 
      * @return bool True if deletion was successful, false otherwise.
      */
     public function delete(Category $category): bool
     {
+        if ($category->ads()->exists()) {
+            throw new \Exception('You can not delete category attached with ads');
+        }
         return $category->delete();
     }
+
 }
