@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Ad;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class AdService
@@ -25,6 +27,19 @@ class AdService
         return Ad::visibleTo(auth()->user())->with($this->relations)->paginate(10);
     }
 
+    public function getActive()
+    {
+        $cacheKey = 'ads_active_ordered_by_views';
+        $ttl = now()->addHours(2);
+
+        return Cache::remember($cacheKey, $ttl, function () {
+            return Ad::active()
+                ->orderedByViews()
+                ->with($this->relations)
+                ->get();
+        });
+    }
+
     /**
      * Get a single Ad instance with related models.
      *
@@ -33,6 +48,18 @@ class AdService
      */
     public function getOne(Ad $ad): Ad
     {
+        // Ensure the ad is visible to the current user
+        $ad = Ad::visibleTo(auth()->user())
+            ->where('id', $ad->id)
+            ->with($this->relations)
+            ->firstOrFail();
+
+         // Safely increment views using locking
+        DB::transaction(function () use ($ad) {
+            $ad->lockForUpdate();
+            $ad->increment('views');
+        });
+
         return $ad->load($this->relations);
     }
 

@@ -24,6 +24,13 @@ class AdController extends Controller
         return $this->successResponse(AdResource::collection($res));
     }
 
+     public function indexByActive()
+    {
+        $res = $this->adService->getActive();
+
+        return $this->successResponse(AdResource::collection($res));
+    }
+
     /**
      * Store a newly created resource in storage.
      */

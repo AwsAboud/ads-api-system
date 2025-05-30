@@ -38,6 +38,16 @@ class Ad extends Model
         });
     }
 
+    public function scopeOrderedByViews(Builder $query, string $direction = 'desc'): Builder
+    {
+        return $query->orderBy('views', $direction);
+    }
+
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('status', 'active');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('ad_id')->constrained()->onDelete('cascade');
             $table->tinyInteger('rating')->unsigned();
             $table->text('comment')->nullable();
+            $table->unsignedBigInteger('views');
             $table->timestamps();
         });
     }
