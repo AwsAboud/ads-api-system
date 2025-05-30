@@ -39,7 +39,7 @@ class AuthService
 
         if (! $user || ! Hash::check($credentials['password'], $user->password)) {
             throw ValidationException::withMessages([
-                'message' => ['auth.failed'],
+                'message' => ['Wrong credentials'],
             ]);
         }
 

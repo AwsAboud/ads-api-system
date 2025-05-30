@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AdController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AuthController;
@@ -22,6 +23,8 @@ Route::group(['prefix' => 'auth'], function () {
 Route::group(['prefix' => 'auth'], function () {
     #Category 
     Route::apiResource('categories', CategoryController::class);
+    #Ad 
+    Route::apiResource('ads', AdController::class);
  });
 
 });
