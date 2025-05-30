@@ -7,16 +7,25 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class ReviewService
 {
-    // Relations to eager load when fetching reviews.
+    /**
+     * Relations to eager load.
+     *
+     * @var array<int, string>
+     */
     protected array $relations = [];
 
-    public function __construct(array $relations = [])
+    /**
+     * ReviewService constructor.
+     *
+     * Initialize relations or other dependencies here.
+     */
+    public function __construct()
     {
-        $this->relations = $relations;
+        //$this->relations = [];
     }
 
     /**
-     * Get all reviews with related models.
+     * Get paginated list of reviews with optional eager loaded relations.
      *
      * @return LengthAwarePaginator<int, Review>
      */
@@ -26,10 +35,10 @@ class ReviewService
     }
 
     /**
-     * Get a single review instance with related models.
+     * Get a single review with optional eager loaded relations.
      *
-     * @param Review $review The review instance to return.
-     * @return Review The review instance.
+     * @param Review $review
+     * @return Review
      */
     public function getOne(Review $review): Review
     {
@@ -37,10 +46,10 @@ class ReviewService
     }
 
     /**
-     * Create a new review.
+     * Create a new review record.
      *
-     * @param array<string, mixed> $data Review data.
-     * @return Review The created review.
+     * @param array<string, mixed> $data
+     * @return Review
      */
     public function create(array $data): Review
     {
@@ -50,11 +59,11 @@ class ReviewService
     }
 
     /**
-     * Update an existing review.
+     * Update an existing review record.
      *
-     * @param array<string, mixed> $data Review data.
-     * @param Review $review The review to update.
-     * @return Review The updated review.
+     * @param array<string, mixed> $data
+     * @param Review $review
+     * @return Review
      */
     public function update(array $data, Review $review): Review
     {
@@ -64,10 +73,10 @@ class ReviewService
     }
 
     /**
-     * Delete a review.
+     * Delete a review record.
      *
-     * @param Review $review The review model instance to delete.
-     * @return bool True if deletion was successful, false otherwise.
+     * @param Review $review
+     * @return bool True if deletion was successful, false otherwise
      */
     public function delete(Review $review): bool
     {

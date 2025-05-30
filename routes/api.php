@@ -25,6 +25,8 @@ Route::group(['prefix' => 'auth'], function () {
     Route::apiResource('categories', CategoryController::class);
     #Ad 
     Route::apiResource('ads', AdController::class);
+     #Ad 
+    Route::apiResource('reviews', AdController::class);
  });
 
 });
