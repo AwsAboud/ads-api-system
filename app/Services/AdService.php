@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Ad;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -12,9 +13,9 @@ class AdService
     // Relations to eager load when fetching Ads.
     protected array $relations = [];
 
-    public function __construct(array $relations = [])
+    public function __construct()
     {
-        $this->relations = $relations;
+        $this->relations = ['images', 'latestImage'];
     }
 
     /**
@@ -24,7 +25,10 @@ class AdService
      */
     public function getAll(): LengthAwarePaginator
     {
-        return Ad::visibleTo(auth()->user())->with($this->relations)->paginate(10);
+        return Ad::visibleTo(auth()->user())
+        ->with($this->relations)
+        ->withCount('reviews')
+        ->paginate(10);
     }
 
     public function getActive()
@@ -36,8 +40,23 @@ class AdService
             return Ad::active()
                 ->orderedByViews()
                 ->with($this->relations)
+                ->withCount('reviews')
                 ->get();
         });
+    }
+
+     public function getActiveAdsByUser(User $user)
+    {
+        $ads = Ad::whereHas('user', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+        ->active()
+        ->orderedByViews()
+        ->with($this->relations)
+        ->withCount('reviews')
+        ->paginate(10);
+
+        return $ads;
     }
 
     /**

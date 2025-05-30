@@ -15,6 +15,7 @@ class Ad extends Model
         'description',
         'price',
         'status',
+        'views',
     ];
 
      /**
@@ -79,5 +80,10 @@ class Ad extends Model
             get: fn (int $value) => $value / 100,
             set: fn (float|int $value) => $value * 100 
         );
+    }
+
+     public function latestImage()
+    {
+        return $this->morphOne(Image::class, 'imageable')->latestOfMany();
     }
 }

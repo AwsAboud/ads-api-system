@@ -61,7 +61,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
             ->middleware('can:changeStatus,ad')
             ->name('ads.change-status');
 
-         Route::get('/active', [AdController::class, 'indexByActive'])->name('ads.index');
+        Route::get('/active/users/{user}', [AdController::class, 'indexByActive'])->name('ads.index');
+        Route::get('/active', [AdController::class, 'indexByActive'])->name('ads.index');
         Route::get('/', [AdController::class, 'index'])->name('ads.index');
         Route::get('{ad}', [AdController::class, 'show'])->name('ads.show');
 

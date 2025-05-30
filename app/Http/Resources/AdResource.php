@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
+use App\Http\Resources\ImageResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AdResource extends JsonResource
@@ -22,6 +23,10 @@ class AdResource extends JsonResource
             'description' => $this->description,
             'price'       => $this->price,
             'status'      => $this->status,
+            'images' => ImageResource::collection($this->whenLoaded('images')),
+            'cover_image'  => new ImageResource($this->whenLoaded('latestImage')),
+            'reviews_count' => $this->reviews_count ?? null,
+         
         ];
     }
 }

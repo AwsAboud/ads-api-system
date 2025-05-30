@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Ad;
+use App\Models\User;
 use App\Services\AdService;
 use App\Http\Resources\AdResource;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Ad\changeAdStatusRequest;
 use App\Http\Requests\Ad\StoreAdRequest;
 use App\Http\Requests\Ad\UpdateAdRequest;
+use App\Http\Requests\Ad\changeAdStatusRequest;
 
 class AdController extends Controller
 {
@@ -27,6 +28,13 @@ class AdController extends Controller
      public function indexByActive()
     {
         $res = $this->adService->getActive();
+
+        return $this->successResponse(AdResource::collection($res));
+    }
+
+    public function listByUser(User $user)
+    {
+        $res = $this->adService-> getActiveAdsByUser($user);
 
         return $this->successResponse(AdResource::collection($res));
     }
