@@ -8,7 +8,6 @@ use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Services\CategoryService;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -39,17 +38,17 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        $category = $this->categoryService->getOne();
+        $category = $this->categoryService->getOne($category);
 
-        return $this->successResponse(CategoryResource::collection( $category));
+        return $this->successResponse(new CategoryResource($category));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoryRequest Request  $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $category = $this->categoryService->update($request->validated());
+        $category = $this->categoryService->update($request->validated(), $category);
         
         return $this->successResponse(new CategoryResource($category));
     }
@@ -59,7 +58,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $category->delete();
+       $this->categoryService->delete($category);
+
         return $this->successResponse(null, code:204);
     }
 }

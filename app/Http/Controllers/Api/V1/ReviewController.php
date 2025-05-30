@@ -39,17 +39,17 @@ class ReviewController extends Controller
      */
     public function show(Review $review)
     {
-        $review = $this->reviewService->getOne();
+        $review = $this->reviewService->getOne($review);
 
-        return $this->successResponse(ReviewResource::collection( $review));
+        return $this->successResponse(new ReviewResource( $review));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateReviewRequest Request  $request, Review $review)
+    public function update(UpdateReviewRequest $request, Review $review)
     {
-        $review = $this->reviewService->update($request->validated());
+        $review = $this->reviewService->update($request->validated(), $review);
         
         return $this->successResponse(new ReviewResource($review));
     }
@@ -59,7 +59,8 @@ class ReviewController extends Controller
      */
     public function destroy(Review $review)
     {
-        $review->delete();
+       $this->reviewService->delete($review);
+
         return $this->successResponse(null, code:204);
     }
 }

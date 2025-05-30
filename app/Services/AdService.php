@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use App\Models\Review;
+use App\Models\Ad;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class ReviewService
+class AdService
 {
-    // Relations to eager load when fetching reviews.
+    // Relations to eager load when fetching Ads.
     protected array $relations = [];
 
     public function __construct(array $relations = [])
@@ -16,61 +16,61 @@ class ReviewService
     }
 
     /**
-     * Get all reviews with related models.
+     * Get all Ads with related models.
      *
-     * @return LengthAwarePaginator<int, Review>
+     * @return LengthAwarePaginator<int, Ad>
      */
     public function getAll(): LengthAwarePaginator
     {
-        return Review::with($this->relations)->paginate(10);
+        return Ad::with($this->relations)->paginate(10);
     }
 
     /**
-     * Get a single review instance with related models.
+     * Get a single Ad instance with related models.
      *
-     * @param Review $review The review instance to return.
-     * @return Review The review instance.
+     * @param Ad $ad The Ad instance to return.
+     * @return Ad The Ad instance.
      */
-    public function getOne(Review $review): Review
+    public function getOne(Ad $ad): Ad
     {
-        return $review->load($this->relations);
+        return $ad->load($this->relations);
     }
 
     /**
-     * Create a new review.
+     * Create a new Ad.
      *
-     * @param array<string, mixed> $data Review data.
-     * @return Review The created review.
+     * @param array<string, mixed> $data Ad data.
+     * @return Ad The created Ad.
      */
-    public function create(array $data): Review
+    public function create(array $data): Ad
     {
-        $review = Review::create($data);
+        $ad = Ad::create($data);
 
-        return $review->load($this->relations);
+        return $ad->load($this->relations);
     }
 
     /**
-     * Update an existing review.
+     * Update an existing Ad.
      *
-     * @param array<string, mixed> $data Review data.
-     * @param Review $review The review to update.
-     * @return Review The updated review.
+     * @param array<string, mixed> $data Ad data.
+     * @param Ad $ad The Ad to update.
+     * @return Ad The updated Ad.
      */
-    public function update(array $data, Review $review): Review
+    public function update(array $data, Ad $ad): Ad
     {
-        $review->update($data);
+        $ad->update($data);
 
-        return $review->load($this->relations);
+        return $ad->load($this->relations);
     }
 
     /**
-     * Delete a review.
+     * Delete a Ad.
      *
-     * @param Review $review The review model instance to delete.
+     * @param Ad $ad The Ad model instance to delete.
      * @return bool True if deletion was successful, false otherwise.
      */
-    public function delete(Review $review): bool
+    public function delete(Ad $ad): bool
     {
-        return $review->delete();
+        return $ad->delete();
     }
 }

@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\Ad;
+use App\Services\AdService;
+use App\Http\Resources\AdResource;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Ad\StoreAdRequest;
 use App\Http\Requests\Ad\UpdateAdRequest;
-use App\Http\Resources\AdResource;
-use App\Models\Ad;
-use App\Services\AdService;
-use Illuminate\Http\Request;
 
 class AdController extends Controller
 {
@@ -39,17 +38,17 @@ class AdController extends Controller
      */
     public function show(Ad $ad)
     {
-        $ad = $this->adService->getOne();
+        $ad = $this->adService->getOne($ad);
 
-        return $this->successResponse(AdResource::collection( $ad));
+        return $this->successResponse(new AdResource( $ad));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAdRequest Request  $request, Ad $ad)
+    public function update(UpdateAdRequest $request, Ad $ad)
     {
-        $ad = $this->adService->update($request->validated());
+        $ad = $this->adService->update($request->validated(), $ad);
         
         return $this->successResponse(new AdResource($ad));
     }
@@ -59,7 +58,8 @@ class AdController extends Controller
      */
     public function destroy(Ad $ad)
     {
-        $ad->delete();
+        $this->adService->delete($ad);
+
         return $this->successResponse(null, code:204);
     }
 }

@@ -19,8 +19,9 @@ Route::group(['prefix' => 'auth'], function () {
         Route::post('logout', [AuthController::class, 'logout']);
         Route::post('logout-from-all-devices', [AuthController::class, 'logoutFromAllDevices']);
     });
+});
 
-Route::group(['prefix' => 'auth'], function () {
+Route::group(['middleware' => 'auth:sanctum'], function () {
     #Category 
     Route::apiResource('categories', CategoryController::class);
     #Ad 
@@ -29,4 +30,3 @@ Route::group(['prefix' => 'auth'], function () {
     Route::apiResource('reviews', AdController::class);
  });
 
-});

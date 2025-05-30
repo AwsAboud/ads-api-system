@@ -39,17 +39,17 @@ class {{ class }} extends Controller
      */
     public function show({{ model }} ${{ modelVariable }})
     {
-        ${{ modelVariable }} = $this->{{ modelVariable }}Service->getOne();
+        ${{ modelVariable }} = $this->{{ modelVariable }}Service->getOne(${{ modelVariable }});
 
-        return $this->successResponse({{ model }}Resource::collection( ${{ modelVariable }}));
+        return $this->successResponse(new {{ model }}Resource(${{ modelVariable }}));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Update{{ model }}Request Request  $request, {{ model }} ${{ modelVariable }})
+    public function update(Update{{ model }}Request $request, {{ model }} ${{ modelVariable }})
     {
-        ${{ modelVariable }} = $this->{{ modelVariable }}Service->update($request->validated());
+        ${{ modelVariable }} = $this->{{ modelVariable }}Service->update($request->validated(), ${{ modelVariable }});
         
         return $this->successResponse(new {{ model }}Resource(${{ modelVariable }}));
     }
@@ -59,7 +59,8 @@ class {{ class }} extends Controller
      */
     public function destroy({{ model }} ${{ modelVariable }})
     {
-        ${{ modelVariable }}->delete();
+        $this->{{ modelVariable }}Service->delete(${{ modelVariable }});
+
         return $this->successResponse(null, code:204);
     }
 }
