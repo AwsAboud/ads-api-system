@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\CategoryController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -17,4 +18,10 @@ Route::group(['prefix' => 'auth'], function () {
         Route::post('logout', [AuthController::class, 'logout']);
         Route::post('logout-from-all-devices', [AuthController::class, 'logoutFromAllDevices']);
     });
+
+Route::group(['prefix' => 'auth'], function () {
+    #Category 
+    Route::apiResource('categories', CategoryController::class);
+ });
+
 });
