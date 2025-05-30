@@ -6,6 +6,7 @@ use App\Models\Ad;
 use App\Services\AdService;
 use App\Http\Resources\AdResource;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Ad\changeAdStatusRequest;
 use App\Http\Requests\Ad\StoreAdRequest;
 use App\Http\Requests\Ad\UpdateAdRequest;
 
@@ -28,7 +29,9 @@ class AdController extends Controller
      */
     public function store(StoreAdRequest $request)
     {
-        $ad = $this->adService->create($request->validated());
+        $data = $request->validated();
+        $data ['user_id'] = auth()->id();
+        $ad = $this->adService->create($data);
         
         return $this->successResponse(new AdResource($ad), code:201);
     }
@@ -61,5 +64,16 @@ class AdController extends Controller
         $this->adService->delete($ad);
 
         return $this->successResponse(null, code:204);
+    }
+
+    /**
+     * Update the specified resource status in storage.
+     */
+    public function changeStatus(changeAdStatusRequest $request, Ad $ad)
+    {
+        $status = $request->validated()['status'];
+        $ad = $this->adService->changeStatus( $status, $ad);
+        
+        return $this->successResponse(new AdResource($ad));
     }
 }

@@ -25,11 +25,11 @@ class UpdateAdRequest extends FormRequest
             'category_id' => ['sometimes', 'exists:categories,id'],
             'title'       => ['sometimes', 'string', 'max:255'],
             'description' => ['sometimes', 'string', 'max:5000'],
-            'price'       => ['sometimes', 'integer', 'min:0'],
+            // Ensure the price is a number with up to 2 decimal places (e.g. 9, 9.5, 9.99 — but not 9.999)
+            'price'       => ['sometimes', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
             'status'      => ['sometimes', 'in:pending,active,rejected'],
-            'images'      => ['sometimes', 'array'],
+            'images'      => ['sometimes', 'array', 'max:50'],
             'images.*'    => ['image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
-
         ];
     }
 }

@@ -22,14 +22,13 @@ class StoreAdRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id'     => ['required', 'exists:users,id'],
             'category_id' => ['required', 'exists:categories,id'],
             'title'       => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:5000'],
-            'price'       => ['required', 'integer', 'min:0'],
+            // Ensure the price is a number with up to 2 decimal places (e.g. 9, 9.5, 9.99 — but not 9.999)
+            'price'       => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
             'images'      => ['sometimes', 'array'],
-            'images.*'    => ['image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
-            // 'status'      => ['in:pending,active,rejected'],
+            'images.*'    => ['image', 'mimes:jpeg,png,jpg,webp', 'max:2048', 'max:50'],
         ];
     }
 }

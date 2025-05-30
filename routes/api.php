@@ -25,7 +25,11 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     #Category 
     Route::apiResource('categories', CategoryController::class);
     #Ad 
-    Route::apiResource('ads', AdController::class);
+    Route::post('ads/{ad}/change-status', [AdController::class, 'changeStatus'])->middleware('can:changeStatus,ad');
+    Route::apiResource('ads', AdController::class)->middleware([
+        'update' => 'can:update,ad',
+        'destroy' => 'can:delete,ad'
+    ]);
      #Ad 
     Route::apiResource('reviews', AdController::class);
  });

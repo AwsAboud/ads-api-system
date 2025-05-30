@@ -62,4 +62,9 @@ class User extends Authenticatable
     {
         return $this->morphMany(Image::class, 'imageable');
     }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
 }

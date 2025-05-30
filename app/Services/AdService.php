@@ -22,7 +22,7 @@ class AdService
      */
     public function getAll(): LengthAwarePaginator
     {
-        return Ad::with($this->relations)->paginate(10);
+        return Ad::visibleTo(auth()->user())->with($this->relations)->paginate(10);
     }
 
     /**
@@ -64,6 +64,20 @@ class AdService
     }
 
     /**
+     * Change the status of an Ad.
+     * @param string $status The new status (e.g., 'pending', 'active', 'rejected').
+     * @param Ad $ad The Ad instance to update.
+     * @return Ad The updated Ad instance.
+     */
+    public function changeStatus( string $status, Ad $ad): Ad
+    {
+        $ad->update(['status' => $status]);
+
+        return $ad->load($this->relations);
+    }
+
+
+    /**
      * Delete a Ad.
      *
      * @param Ad $ad The Ad model instance to delete.
@@ -73,4 +87,5 @@ class AdService
     {
         return $ad->delete();
     }
+    
 }
